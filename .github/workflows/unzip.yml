@@ -1,0 +1,33 @@
+name: Decompress ZIP Project
+
+on:
+  push:
+    paths:
+      - '**.zip'
+
+jobs:
+  unzip:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Extract ZIP files
+        run: |
+          for file in *.zip; do
+            if [ -f "$file" ]; then
+              echo "Unzipping $file..."
+              unzip -o "$file" -d .
+              rm "$file"
+            fi
+          done
+
+      - name: Commit and push extracted files
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git status
+          git diff-index --quiet HEAD || git commit -m "Décompression automatique du projet ZIP"
+          git push
+          
