@@ -1,0 +1,6 @@
+{
+  "name": "Data&Time Control",
+  "description": "Application de suivi et contrôle de la consommation de données et du temps d'écran",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
