@@ -2,8 +2,7 @@ name: Decompress ZIP Project
 
 on:
   push:
-    paths:
-      - '**.zip'
+    branches: [ "main", "master", "principal" ]
 
 permissions:
   contents: write
@@ -17,13 +16,20 @@ jobs:
 
       - name: Extract ZIP files
         run: |
+          shopt -s nocaseglob
+          found=0
           for file in *.zip; do
             if [ -f "$file" ]; then
-              echo "Unzipping $file..."
+              echo "Extraction de $file..."
               unzip -o "$file" -d .
-              rm "$file"
+              rm -f "$file"
+              found=1
             fi
           done
+          if [ $found -eq 0 ]; then
+            echo "Aucun fichier ZIP trouvé à la racine."
+            exit 1
+          fi
 
       - name: Commit and push extracted files
         run: |
